@@ -4,12 +4,12 @@ inputs:
   version:  # id of input
     description: 'Release version'
     required: true
-    default: '${{ inputs.who-to-greet }}'
+    default: ${{GITHUB_REF#'release/'}}
 runs:
   using: "composite"
   steps:
     - name: Build and stage release
-      run: ./gradlew check publish bintrayUpload -Pversion=${GITHUB_REF#'release/'}
+      run: ./gradlew check publish bintrayUpload -Pversion=${{ inputs.version }}
       shell: bash
     - name: Release
       run: ./gradlew closeAndReleaseRepository
