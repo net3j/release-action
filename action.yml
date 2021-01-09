@@ -1,10 +1,12 @@
 name: 'Web3j release action'
 description: 'Releases a branch'
 inputs:
-  version:  # id of input
+  version:
     description: 'Release version'
     required: true
-    default: ${{GITHUB_REF#'release/'}}
+  github-token:
+    description: GitHub access token
+    required: true
 runs:
   using: "composite"
   steps:
@@ -18,5 +20,5 @@ runs:
       run: ./scripts/github-release.sh
       shell: bash
     - name: Javadoc release
-      run: ./gradlew -Dorg.ajoberstar.grgit.auth.username=${{ secrets.GITHUB_TOKEN }} core:gitPublishPush
+      run: ./gradlew -Dorg.ajoberstar.grgit.auth.username=${{ inputs.github-token }} core:gitPublishPush
       shell: bash
